@@ -31,7 +31,13 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] Backend scope remains on Spring Boot 3 + Java 17 with layered architecture.
+- [ ] Security-by-default is addressed (auth, secret handling, no hardcoded credentials).
+- [ ] PostgreSQL persistence changes include versioned migrations and realistic tests.
+- [ ] Docker reproducibility is preserved for all required services.
+- [ ] API contract changes are reflected in Swagger/OpenAPI documentation.
+- [ ] If web UI is in scope, frontend uses Angular 20 LTS with clear `core/shared/features`
+  boundaries.
 
 ## Project Structure
 
@@ -78,9 +84,11 @@ backend/
 
 frontend/
 ├── src/
-│   ├── components/
-│   ├── pages/
-│   └── services/
+│   ├── app/
+│   │   ├── core/
+│   │   ├── features/
+│   │   └── shared/
+│   └── assets/
 └── tests/
 
 # [REMOVE IF UNUSED] Option 3: Mobile + API (when "iOS/Android" detected)

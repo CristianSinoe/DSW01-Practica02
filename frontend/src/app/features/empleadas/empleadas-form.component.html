@@ -1,0 +1,66 @@
+<div class="page">
+  <header class="page-header">
+    <div>
+      <h1>{{ isEditMode ? 'Editar empleado' : 'Nuevo empleado' }}</h1>
+      <p>Completa la informacion obligatoria para guardar.</p>
+    </div>
+    <a class="ghost" routerLink="/empleadas">Volver</a>
+  </header>
+
+  <section class="panel" *ngIf="errorMessage">
+    <p class="panel-error">{{ errorMessage }}</p>
+  </section>
+
+  <section class="panel" *ngIf="isLoading && !errorMessage">
+    <p>Cargando informacion...</p>
+  </section>
+
+  <form class="panel" *ngIf="!isLoading" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="grid">
+      <label class="field">
+        <span>Nombre</span>
+        <input formControlName="nombre" placeholder="Ana Perez" />
+      </label>
+
+      <label class="field">
+        <span>Email</span>
+        <input type="email" formControlName="email" placeholder="ana@empresa.com" />
+      </label>
+
+      <label class="field">
+        <span>Telefono</span>
+        <input formControlName="telefono" placeholder="555-0101" />
+      </label>
+
+      <label class="field">
+        <span>Direccion</span>
+        <input formControlName="direccion" placeholder="Av. Central 123" />
+      </label>
+
+      <label class="field">
+        <span>Contrasena</span>
+        <input
+          type="password"
+          formControlName="password"
+          placeholder="{{ isEditMode ? 'Deja en blanco para mantener' : 'Minimo 8 caracteres' }}"
+        />
+        <small>Solo se actualiza si ingresas una nueva.</small>
+      </label>
+
+      <label class="field">
+        <span>Rol</span>
+        <select formControlName="role">
+          <option *ngFor="let role of roleOptions" [value]="role">
+            {{ role }}
+          </option>
+        </select>
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="primary" type="submit" [disabled]="isSubmitting">
+        {{ isEditMode ? 'Guardar cambios' : 'Crear empleado' }}
+      </button>
+    </div>
+  </form>
+</div>

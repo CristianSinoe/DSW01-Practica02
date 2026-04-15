@@ -4,8 +4,7 @@
 - Java 17 y Maven Wrapper (`./mvnw`).
 - Docker y Docker Compose 2.x.
 - Variables de entorno definidas:
-  - `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`.
-  - `ADMIN_USERNAME`, `ADMIN_PASSWORD` para el rol administrativo del API.
+   - `POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`.
 
 ## Pasos
 1. **Levantar PostgreSQL**
@@ -23,19 +22,26 @@
    ./mvnw spring-boot:run
    ```
    El servicio queda disponible en `http://localhost:8080`.
-4. **Probar autenticación**
+4. **Bootstrap del primer empleado (sin autenticación)**
    ```bash
-   curl -u "$ADMIN_USERNAME:$ADMIN_PASSWORD" http://localhost:8080/api/v1/empleados
-   ```
-   Debe responder `200 OK` con arreglo vacío si no hay datos.
-5. **Probar flujo CRUD completo**
-   ```bash
-   curl -u "$ADMIN_USERNAME:$ADMIN_PASSWORD" \
-      -H 'Content-Type: application/json' \
-      -d '{"clave":"E-001","nombre":"Ana","direccion":"Centro","telefono":"555"}' \
+   curl -H 'Content-Type: application/json' \
+      -d '{"clave":"E-001","nombre":"Ana","direccion":"Centro","telefono":"555","password":"AnaSegura123"}' \
       -X POST http://localhost:8080/api/v1/empleados
    ```
-   Luego consulta `GET /api/v1/empleados/E-001` y `DELETE /api/v1/empleados/E-001` para completar el ciclo.
+   Debe responder `201 Created`.
+5. **Probar autenticación basada en Empleado**
+   ```bash
+   curl -u "E-001:AnaSegura123" "http://localhost:8080/api/v1/empleados?page=0&size=10&sort=clave,asc"
+   ```
+   Debe responder `200 OK` con respuesta paginada (`content`, `totalElements`, `totalPages`, `size`, `number`).
+6. **Probar flujo CRUD completo de empleados**
+   ```bash
+   curl -u "E-001:AnaSegura123" \
+      -H 'Content-Type: application/json' \
+      -d '{"clave":"E-002","nombre":"Luis","direccion":"Norte","telefono":"555-0202","password":"LuisClave123"}' \
+      -X POST http://localhost:8080/api/v1/empleados
+   ```
+   Luego consulta por ID, actualiza y elimina para completar el ciclo.
 
 ## Verificaciones adicionales
 - Abre `http://localhost:8080/swagger-ui.html` para revisar la documentación expuesta por Springdoc.
@@ -44,3 +50,8 @@
   ./mvnw test
   ```
   Las pruebas de integración arrancarán un contenedor PostgreSQL mediante Testcontainers.
+
+## Notas funcionales
+- La entidad `Empleado` incluye el campo `password` y este no se expone en respuestas de la API.
+- El listado de empleados es paginado (`Page`) y no retorna todos los registros en una única consulta.
+- La autenticación HTTP Basic valida usuario/contraseña contra registros persistidos de `Empleado`.

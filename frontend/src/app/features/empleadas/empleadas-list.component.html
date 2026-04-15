@@ -1,0 +1,64 @@
+<div class="page">
+  <header class="page-header">
+    <div>
+      <h1>Empleados</h1>
+      <p>Directorio interno con acceso por rol.</p>
+      <p class="read-only" *ngIf="!isAdmin">
+        Estas en modo lectura. Solicita permisos admin para editar.
+      </p>
+    </div>
+    <div class="header-actions">
+      <button class="ghost" type="button" (click)="logout()">Cerrar sesion</button>
+      <a class="primary" *ngIf="isAdmin" routerLink="/empleadas/nueva">Nuevo empleado</a>
+    </div>
+  </header>
+
+  <section class="panel" *ngIf="errorMessage">
+    <p class="panel-error">{{ errorMessage }}</p>
+  </section>
+
+  <section class="panel" *ngIf="isLoading && !errorMessage">
+    <p>Cargando empleados...</p>
+  </section>
+
+  <section class="panel" *ngIf="!isLoading && !errorMessage">
+    <table class="table" *ngIf="empleadas.length; else emptyState">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Telefono</th>
+          <th>Rol</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let empleada of empleadas">
+          <td>
+            <div class="cell-title">{{ empleada.nombre }}</div>
+            <div class="cell-meta">{{ empleada.email }}</div>
+          </td>
+          <td>{{ empleada.telefono }}</td>
+          <td>
+            <span class="role-pill" [class.admin]="empleada.role === 'ADMIN'">
+              {{ empleada.role }}
+            </span>
+          </td>
+          <td class="actions">
+            <a [routerLink]="['/empleadas', empleada.id]">Ver</a>
+            <a *ngIf="isAdmin" [routerLink]="['/empleadas', empleada.id, 'editar']">Editar</a>
+            <button *ngIf="isAdmin" type="button" (click)="handleDelete(empleada.id)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <ng-template #emptyState>
+      <div class="empty">
+        <h3>Aun no hay empleados registrados</h3>
+        <p>Agrega el primer empleado para iniciar el directorio.</p>
+      </div>
+    </ng-template>
+  </section>
+</div>

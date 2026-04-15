@@ -1,6 +1,14 @@
 # Version control
 .git
+.git/
 .gitignore
+
+# Docker files
+Dockerfile*
+.dockerignore
+
+# Node artifacts (por seguridad en contextos mixtos)
+node_modules/
 
 # IDE / tooling
 .vscode
@@ -12,6 +20,7 @@
 /build
 /bin
 /out
+dist
 
 # Dependency caches
 # Maven wrapper is required for container builds
@@ -22,6 +31,7 @@
 
 # Logs and temp files
 *.log
+*.log*
 *.tmp
 *.swp
 

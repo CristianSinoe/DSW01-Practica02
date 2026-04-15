@@ -8,10 +8,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,15 +36,25 @@ public class EmpleadoController {
     }
 
     @Operation(summary = "Listar empleados")
-    @ApiResponse(responseCode = "200", description = "OK")
+        @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "401", description = "No autorizado"),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado")
+        })
     @GetMapping
-    public ResponseEntity<Page<EmpleadoResponse>> listAll(@PageableDefault(size = 10, sort = "clave") Pageable pageable) {
-        return ResponseEntity.ok(empleadoService.listEmpleados(pageable));
+    public ResponseEntity<Page<EmpleadoResponse>> listAll(
+            @RequestParam(defaultValue = "0") @Min(value = 0, message = "page debe ser mayor o igual a 0") int page,
+            @RequestParam(defaultValue = "${empleados.pagination.default-size:10}")
+            @Min(value = 1, message = "size debe ser mayor que 0") int size,
+            @RequestParam(name = "sort", required = false) String[] sort
+    ) {
+        return ResponseEntity.ok(empleadoService.listEmpleados(page, size, sort));
     }
 
     @Operation(summary = "Obtener empleado por id")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado"),
             @ApiResponse(responseCode = "404", description = "No encontrado")
     })
     @GetMapping("/{id}")
@@ -55,7 +65,9 @@ public class EmpleadoController {
     @Operation(summary = "Registrar un nuevo empleado")
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Creado"),
-            @ApiResponse(responseCode = "409", description = "Conflicto por clave duplicada")
+            @ApiResponse(responseCode = "400", description = "Validacion"),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado"),
+            @ApiResponse(responseCode = "409", description = "Conflicto por email duplicado")
     })
     @PostMapping
     public ResponseEntity<EmpleadoResponse> create(@Valid @RequestBody EmpleadoCreateRequest request) {
@@ -65,8 +77,10 @@ public class EmpleadoController {
     @Operation(summary = "Actualizar empleado por id")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Validacion"),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado"),
             @ApiResponse(responseCode = "404", description = "No encontrado"),
-            @ApiResponse(responseCode = "409", description = "Conflicto por clave duplicada")
+            @ApiResponse(responseCode = "409", description = "Conflicto por email duplicado")
     })
     @PutMapping("/{id}")
     public ResponseEntity<EmpleadoResponse> update(
@@ -79,6 +93,7 @@ public class EmpleadoController {
     @Operation(summary = "Eliminar empleado por id")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Sin contenido"),
+            @ApiResponse(responseCode = "403", description = "Acceso denegado"),
             @ApiResponse(responseCode = "404", description = "No encontrado")
     })
     @DeleteMapping("/{id}")

@@ -21,7 +21,7 @@ description: "Task list template for feature implementation"
 ## Path Conventions
 
 - **Single project**: `src/`, `tests/` at repository root
-- **Web app**: `backend/src/`, `frontend/src/`
+- **Web app**: `backend/src/`, `frontend/src/app/`, `frontend/src/assets/`
 - **Mobile**: `api/src/`, `ios/src/` or `android/src/`
 - Paths shown below assume single project - adjust based on plan.md structure
 
@@ -64,10 +64,10 @@ Examples of foundational tasks (adjust based on your project):
 
 - [ ] T004 Setup database schema and migrations framework
 - [ ] T005 [P] Implement authentication/authorization framework
-- [ ] T006 [P] Setup API routing and middleware structure
+- [ ] T006 [P] Setup API routing/middleware and Angular 20 LTS routing baseline (if UI applies)
 - [ ] T007 Create base models/entities that all stories depend on
-- [ ] T008 Configure error handling and logging infrastructure
-- [ ] T009 Setup environment configuration management
+- [ ] T008 Configure backend/frontend error handling and logging infrastructure
+- [ ] T009 Setup environment configuration management for backend profiles and frontend environments
 
 **Checkpoint**: Foundation ready - user story implementation can now begin in parallel
 
@@ -91,7 +91,7 @@ Examples of foundational tasks (adjust based on your project):
 - [ ] T012 [P] [US1] Create [Entity1] model in src/models/[entity1].py
 - [ ] T013 [P] [US1] Create [Entity2] model in src/models/[entity2].py
 - [ ] T014 [US1] Implement [Service] in src/services/[service].py (depends on T012, T013)
-- [ ] T015 [US1] Implement [endpoint/feature] in src/[location]/[file].py
+- [ ] T015 [US1] Implement backend [endpoint/feature] and Angular 20 LTS UI slice when applicable
 - [ ] T016 [US1] Add validation and error handling
 - [ ] T017 [US1] Add logging for user story 1 operations
 
@@ -246,6 +246,7 @@ With multiple developers:
 - [Story] label maps task to specific user story for traceability
 - Each user story should be independently completable and testable
 - Verify tests fail before implementing
+- For web scope, include Angular 20 LTS verification tasks (for example, build/test checks)
 - Commit after each task or logical group
 - Stop at any checkpoint to validate story independently
 - Avoid: vague tasks, same file conflicts, cross-story dependencies that break independence

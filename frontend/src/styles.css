@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Space+Grotesk:wght@400;500;600&display=swap');
+
+:root {
+	--font-body: 'Space Grotesk', 'Segoe UI', sans-serif;
+	--font-display: 'Fraunces', 'Georgia', serif;
+	--color-ink: #1f2a25;
+	--color-muted: #5d6a62;
+	--color-olive: #2f6b5a;
+	--color-sand: #f2a65a;
+	--color-alert: #d35a4c;
+	--card-bg: rgba(255, 255, 255, 0.85);
+	--card-border: rgba(47, 107, 90, 0.18);
+	--shadow-strong: 0 28px 60px rgba(31, 42, 37, 0.18);
+	--shadow-soft: 0 14px 30px rgba(31, 42, 37, 0.12);
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	min-height: 100vh;
+	font-family: var(--font-body);
+	color: var(--color-ink);
+	background:
+		radial-gradient(900px circle at 10% 10%, rgba(242, 166, 90, 0.22), transparent 55%),
+		radial-gradient(700px circle at 85% 20%, rgba(47, 107, 90, 0.18), transparent 55%),
+		linear-gradient(180deg, #f7f1e8 0%, #fdfbf7 100%);
+}
+
+img {
+	max-width: 100%;
+	display: block;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+}

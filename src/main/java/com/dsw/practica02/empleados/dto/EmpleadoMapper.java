@@ -15,10 +15,12 @@ public final class EmpleadoMapper {
         Objects.requireNonNull(empleado, "empleado");
         return new EmpleadoResponse(
                 empleado.getId(),
-                empleado.getClave(),
                 empleado.getNombre(),
-                empleado.getDireccion(),
+                empleado.getEmail(),
                 empleado.getTelefono(),
+                empleado.getDireccion(),
+                empleado.getRole(),
+                empleado.getDepartamento() != null ? empleado.getDepartamento().getId() : null,
                 empleado.getCreatedAt(),
                 empleado.getUpdatedAt()
         );

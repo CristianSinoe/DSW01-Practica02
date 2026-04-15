@@ -1,0 +1,58 @@
+<div class="page">
+  <header class="page-header">
+    <div>
+      <h1>Detalle de empleado</h1>
+      <p>Informacion general del perfil.</p>
+      <p class="read-only" *ngIf="!isAdmin">
+        Modo lectura activo. No tienes permisos para editar.
+      </p>
+    </div>
+    <div class="header-actions">
+      <a class="ghost" routerLink="/empleadas">Volver</a>
+      <a
+        class="primary"
+        *ngIf="isAdmin && empleada"
+        [routerLink]="['/empleadas', empleada.id, 'editar']"
+      >
+        Editar
+      </a>
+    </div>
+  </header>
+
+  <section class="panel" *ngIf="errorMessage">
+    <p class="panel-error">{{ errorMessage }}</p>
+  </section>
+
+  <section class="panel" *ngIf="isLoading && !errorMessage">
+    <p>Cargando detalle...</p>
+  </section>
+
+  <section class="panel" *ngIf="empleada && !errorMessage">
+    <div class="detail-grid">
+      <div>
+        <span class="label">Nombre</span>
+        <p>{{ empleada.nombre }}</p>
+      </div>
+      <div>
+        <span class="label">Email</span>
+        <p>{{ empleada.email }}</p>
+      </div>
+      <div>
+        <span class="label">Telefono</span>
+        <p>{{ empleada.telefono }}</p>
+      </div>
+      <div>
+        <span class="label">Direccion</span>
+        <p>{{ empleada.direccion }}</p>
+      </div>
+      <div>
+        <span class="label">Rol</span>
+        <p>{{ empleada.role }}</p>
+      </div>
+    </div>
+
+    <div class="actions" *ngIf="isAdmin">
+      <button class="danger" type="button" (click)="handleDelete()">Eliminar</button>
+    </div>
+  </section>
+</div>

@@ -95,6 +95,16 @@
 - **FR-006**: System MUST authenticate users via [NEEDS CLARIFICATION: auth method not specified - email/password, SSO, OAuth?]
 - **FR-007**: System MUST retain user data for [NEEDS CLARIFICATION: retention period not specified]
 
+### Constitution Alignment *(mandatory)*
+
+- **CA-001**: Backend scope MUST remain compatible with Spring Boot 3 + Java 17.
+- **CA-002**: Security-sensitive changes MUST specify authentication/authorization impact
+  and secret handling.
+- **CA-003**: Data model changes MUST include PostgreSQL migration implications.
+- **CA-004**: API changes MUST update OpenAPI contracts and expected error responses.
+- **CA-005**: Features with web UI MUST define Angular 20 LTS scope (routes/components,
+  services, and API integration boundaries).
+
 ### Key Entities *(include if feature involves data)*
 
 - **[Entity 1]**: [What it represents, key attributes without implementation]

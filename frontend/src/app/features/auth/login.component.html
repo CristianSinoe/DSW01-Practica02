@@ -1,0 +1,73 @@
+<div class="auth-shell">
+  <section class="auth-hero">
+    <span class="brand-pill">Directorio</span>
+    <h1>Acceso a Empleados</h1>
+    <p>
+      Gestiona el directorio con acceso seguro por rol. Inicia sesion para acceder
+      a la informacion de tu equipo.
+    </p>
+    <div class="hero-grid">
+      <div class="hero-item">
+        <span>Roles</span>
+        <strong>Admin / Empleado</strong>
+      </div>
+      <div class="hero-item">
+        <span>Modo</span>
+        <strong>Lectura o CRUD</strong>
+      </div>
+    </div>
+    <ul class="hero-list">
+      <li>Login con email y contrasena</li>
+      <li>Acceso protegido con HTTP Basic</li>
+      <li>Validacion inmediata y mensajes claros</li>
+    </ul>
+  </section>
+
+  <form class="auth-card" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="card-header">
+      <p class="card-eyebrow">Bienvenida</p>
+      <h2>Iniciar sesion</h2>
+      <p class="card-subtitle">Usa tu email corporativo para continuar.</p>
+    </div>
+
+    <label class="field">
+      <span>Email</span>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="ana@empresa.com"
+        autocomplete="email"
+      />
+      <span class="field-error" *ngIf="email.touched && email.invalid">
+        <span *ngIf="email.errors?.['required']">El email es obligatorio.</span>
+        <span *ngIf="email.errors?.['email']">Ingresa un email valido.</span>
+      </span>
+    </label>
+
+    <label class="field">
+      <span>Contrasena</span>
+      <input
+        type="password"
+        formControlName="password"
+        placeholder="••••••••"
+        autocomplete="current-password"
+      />
+      <span class="field-error" *ngIf="password.touched && password.invalid">
+        <span *ngIf="password.errors?.['required']">La contrasena es obligatoria.</span>
+        <span *ngIf="password.errors?.['minlength']">Minimo 8 caracteres.</span>
+        <span *ngIf="password.errors?.['maxlength']">Maximo 100 caracteres.</span>
+      </span>
+    </label>
+
+    <button class="primary" type="submit" [disabled]="isSubmitting">
+      <span *ngIf="!isSubmitting">Entrar</span>
+      <span *ngIf="isSubmitting">Verificando...</span>
+    </button>
+
+    <p class="auth-error" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+    <p class="card-footnote">
+      Sin cuenta admin? Contacta al equipo de soporte para el acceso inicial.
+    </p>
+  </form>
+</div>
