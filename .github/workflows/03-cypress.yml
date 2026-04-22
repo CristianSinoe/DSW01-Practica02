@@ -1,0 +1,53 @@
+name: 03 Cypress
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - main
+      - develop
+
+jobs:
+  cypress-auth:
+    name: Cypress Auth E2E
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Start frontend app
+        run: npm run start -- --host 127.0.0.1 --port 4200 > /tmp/ng-serve.log 2>&1 &
+
+      - name: Wait for frontend app
+        run: |
+          for i in {1..60}; do
+            if curl -sSf http://127.0.0.1:4200 >/dev/null; then
+              echo "Frontend is ready"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Frontend did not start in time"
+          cat /tmp/ng-serve.log
+          exit 1
+
+      - name: Run Cypress authentication test
+        run: npx cypress run --e2e --browser chrome --headless --spec cypress/e2e/authentication.cy.ts
