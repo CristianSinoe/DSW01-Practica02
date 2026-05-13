@@ -4,13 +4,11 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 on:
-  push:
-    branches:
-      - develop
-  pull_request:
-    branches:
-      - main
-      - develop
+  workflow_run:
+    workflows:
+      - 02 SonarCloud
+    types:
+      - completed
 
 jobs:
   cypress-auth:

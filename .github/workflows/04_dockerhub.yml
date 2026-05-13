@@ -1,9 +1,11 @@
 name: 04 Docker Hub
 
 on:
-  push:
-    branches:
-      - develop
+  workflow_run:
+    workflows:
+      - 03 Cypress
+    types:
+      - completed
   workflow_dispatch:
 
 env:
